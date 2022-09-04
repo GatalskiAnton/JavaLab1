@@ -13,12 +13,13 @@ public class Sum
         double sum = 0;
         double currentTerm = 0;
         int k = 1;
-
-        do {
+        do
+        {
             currentTerm = (Math.pow(-1,k) * Math.pow(x,k)) / Math.pow(k+1,2);
             sum += currentTerm;
-            k += 2;
-        }while (currentTerm >= precision);
+            ++k;
+        }while (Math.abs(currentTerm) >= precision);
+
         System.out.println(sum);
     }
 }
