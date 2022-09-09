@@ -1,25 +1,44 @@
-import java.util.Scanner;
 import java.lang.Math;
 
 public class Sum
 {
     public static void main(String[] args)
     {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter x: ");
-        double x = sc.nextDouble();
-        System.out.print("Enter precision: ");
-        double precision = sc.nextDouble();
-        double sum = 0;
-        double currentTerm = 0;
-        int k = 1;
-        do
+        try
         {
-            currentTerm = (Math.pow(-1,k) * Math.pow(x,k)) / Math.pow(k+1,2);
-            sum += currentTerm;
-            ++k;
-        }while (Math.abs(currentTerm) >= precision);
+            if (args.length != 2)
+                throw new IllegalArgumentException("Number of arguments aren`t 2");
+            if(Double.parseDouble(args[1]) < 0)
+                throw new NumberFormatException();
 
-        System.out.println(sum);
+            double res = calculateSum(Double.parseDouble(args[0]),Double.parseDouble(args[1]));
+            System.out.println("Result: " + res);
+        }
+        catch (NumberFormatException e)
+        {
+            System.out.println("Arguments are incorrect");
+            System.exit(0);
+        }
+        catch (IllegalArgumentException e)
+        {
+            System.out.println(e);
+            System.exit(0);
+        }
+    }
+    public static double Sum(int k ,double x,double precision, double currentTerm)
+    {
+        if (Math.abs(currentTerm) < precision)
+            return 0;
+
+        currentTerm *= -((Math.pow(k + 1, 2) * x) / Math.pow(k + 2, 2));
+
+        return currentTerm +  Sum(++k,x,precision,currentTerm);
+    }
+
+    public static double calculateSum(double x,double precision)
+    {
+        int k = 1;
+        double currentTerm = (Math.pow(-1, k) * Math.pow(x, k)) / Math.pow(k + 1, 2);
+        return Sum(k,x,precision,currentTerm) + currentTerm;
     }
 }
